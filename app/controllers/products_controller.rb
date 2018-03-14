@@ -1,24 +1,47 @@
 class ProductsController < ApplicationController
-  def get_first_product
-    product = Product.first
-    render json: {
-      name: product.name,
-      price: product.price,
-      description: product.description
-    }
+  def update
+    product_id = params["id"]
+    product = Product.find_by(id: product_id)
+    product.name = params["input_name"]
+    product.price = params["input_price"]
+    product.image_url = params["input_image_url"]
+    product.description = params["input_description"]
+    if product.save
+      render json: product.as_json
+    else
+      render json: {errors: product.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
-  def get_all_products
-    products = Product.all 
-
-    products_array = products.map do |product|
-    {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      description: product.description
-    }
+  def create
+    product = Product.new(
+      name: params["input_name"],
+      price: params["input_price"],
+      image_url: params["input_image_url"],
+      description: params["input_description"]
+      )
+    if product.save
+      render json: product.as_json
+    else
+      render json: {errors: product.errors.full_messages}, status: :unprocessable_entity
     end
-    render json: products_array.as_json
+  end
+
+  def index
+    products = Product.all 
+    render json: products.as_json
+  end
+
+  def show
+    product_id = params["id"]
+    product = Product.find_by(id: product_id)
+    render json: product.as_json
+  end
+
+  def destroy
+    product_id = params["id"]
+    product = Product.find_by(id: product_id)
+    product.destroy
+    render json: {message: "The product was destroyed."}
   end
 end
