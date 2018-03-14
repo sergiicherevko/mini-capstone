@@ -62,9 +62,17 @@ elsif
   params["input_description"] = gets.chomp
   print "Image URL: "
   params["input_image_url"] = gets.chomp
+  
   response = Unirest.patch("http://localhost:3000/products/#{input_id}", parameters: params)
-  body = response.body
-  puts JSON.pretty_generate(body)
+  product = response.body
+
+  if product["errors"]
+    puts "Uh oh! Something went wrong..."
+    p product["errors"]
+  else
+    puts "Here is your product"
+    puts JSON.pretty_generate(product)
+  end
 elsif 
   user_input == 5
   print "Print a product id: "
