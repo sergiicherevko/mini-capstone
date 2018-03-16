@@ -4,6 +4,7 @@ system "clear"
 
 puts "Welcome to Product app! Choose an option:"
 puts "[1] See all products"
+puts "  [10] Search for product"
 puts "[2] See one product"
 puts "[3] Create a product"
 puts "[4] Update a product"
@@ -16,6 +17,14 @@ if
   respose = Unirest.get("http://localhost:3000/products")
   products = respose.body
   puts JSON.pretty_generate(products)
+elsif 
+  user_input == 10
+  print "Eneter product name: "
+  input_search_criteria = gets.chomp
+
+  respose = Unirest.get("http://localhost:3000/products?search_criteria=#{input_search_criteria}")
+  product = respose.body
+  puts JSON.pretty_generate(product)
 elsif 
   user_input == 2  
   print "Print products id:"
