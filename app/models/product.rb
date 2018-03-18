@@ -9,6 +9,10 @@ class Product < ApplicationRecord
     end
   end
 
+  def supplier
+    Supplier.find_by(id: self.supplier_id)
+  end
+
   def tax
     "Tax: #{self.price * 0.09}"
   end
@@ -23,8 +27,11 @@ class Product < ApplicationRecord
       name: self.name,
       price: self.price,
       image_url: self.image_url,
-      description: self.description
+      description: self.description,
+      supplier: self.supplier
     }
   end
 
 end
+
+# Change your app to show the supplier’s info with each product.
