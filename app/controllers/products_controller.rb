@@ -1,15 +1,16 @@
 class ProductsController < ApplicationController
-
-# • Change the index action to allow for searching by name.
-# • Add an option to the frontend to search by a product’s name.
-# • Bonus: Change the index action to allow for sorting by price. Add a frontend option to see the results.
+  before_action :authenticate_admin, except: [:index, :show]
 
   def index
-    products = Product.all.order(id: :asc)
     search_criteria = params["search_criteria"]
-
     if search_criteria
       products = products.where("name LIKE ?", "%#{search_criteria}%") #SQL in ()
+    end
+
+    if params["order_by_name"]
+      products = Product.all.order(name: :asc)
+    else
+      products = Product.all.order(id: :asc)
     end
 
     render json: products.as_json
@@ -26,7 +27,8 @@ class ProductsController < ApplicationController
       name: params["input_name"],
       price: params["input_price"],
       image_url: params["input_image_url"],
-      description: params["input_description"]
+      description: params["input_description"],
+      supplier_id: params["supplier_id"]
       )
     if product.save
       render json: product.as_json
@@ -56,3 +58,4 @@ class ProductsController < ApplicationController
     render json: {message: "The product was destroyed."}
   end
 end
+

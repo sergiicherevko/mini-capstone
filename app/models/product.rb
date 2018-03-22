@@ -1,4 +1,9 @@
 class Product < ApplicationRecord
+  has_many :order
+
+  has_many :category_products
+  has_many :categories, through: :category_products
+
   validates :name, uniqueness: true
   validates :price, presence: true
   validates :description, length: { in: 1..500 }
@@ -28,10 +33,10 @@ class Product < ApplicationRecord
       price: self.price,
       image_url: self.image_url,
       description: self.description,
-      supplier: self.supplier
+      supplier: self.supplier ? self.supplier.name : "no name",
+      categories: self.categories.map {|category| category.name }
     }
   end
-
 end
 
-# Change your app to show the supplier’s info with each product.
+
