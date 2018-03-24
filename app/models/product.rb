@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  has_many :carted_products
+
   has_many :order
 
   has_many :category_products

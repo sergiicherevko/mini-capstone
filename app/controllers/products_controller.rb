@@ -2,18 +2,21 @@ class ProductsController < ApplicationController
   before_action :authenticate_admin, except: [:index, :show]
 
   def index
-    search_criteria = params["search_criteria"]
-    if search_criteria
-      products = products.where("name LIKE ?", "%#{search_criteria}%") #SQL in ()
-    end
-
-    if params["order_by_name"]
-      products = Product.all.order(name: :asc)
+    if current_user
+      products = Product.all
+      search_criteria = params["search_criteria"]
+      if search_criteria
+        products = products.where("name LIKE ?", "%#{search_criteria}%")
+      end
+      if params["order_by_name"]
+        products = Product.all.order(name: :asc)
+      else
+        products = Product.all.order(id: :asc)
+      end
+      render json: products.as_json
     else
-      products = Product.all.order(id: :asc)
+      render json: []
     end
-
-    render json: products.as_json
   end
   
   def show
