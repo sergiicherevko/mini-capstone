@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   has_many :carted_products
+  has_many :images
 
   has_many :order
 
@@ -33,10 +34,10 @@ class Product < ApplicationRecord
       id: self.id,
       name: self.name,
       price: self.price,
-      image_url: self.image_url,
       description: self.description,
       supplier: self.supplier ? self.supplier.name : "no name",
-      categories: self.categories.map {|category| category.name }
+      categories: self.categories.map {|category| category.name },
+      images: self.images.map {|image| image.url }
     }
   end
 end

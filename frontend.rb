@@ -1,3 +1,9 @@
+# 9) Add a frontend option to order all items in the shopping cart (the orders create action)
+
+# 10) Add a carted products destroy action. This shouldn’t destroy the carted product - it should instead just update the status to “removed”.
+
+# 11) Add a frontend option to remove an item from the cart (the carted products destroy action)
+
 require "unirest"
 # Authorisation
 system "clear"
@@ -54,6 +60,7 @@ exit = 0
 while exit == 0
 
   system "clear"
+  p jwt
   puts "Welcome to Product app! Choose an option:"
 
 
@@ -64,7 +71,10 @@ while exit == 0
   puts "[3] Create a product"
   puts "[4] Update a product"
   puts "[5] Delete a product"
+
   puts "[6] Add to cart"
+  puts "[7] See all carted products"
+  puts "[8] Check out (make an order)"
 
   user_input = gets.chomp
 
@@ -163,6 +173,16 @@ while exit == 0
     response = Unirest.post("http://localhost:3000/carted_products", parameters: params)
     body = response.body
     puts JSON.pretty_generate(body)
+  elsif 
+    user_input == "7"
+    respose = Unirest.get("http://localhost:3000/carted_products")
+    carted_products = respose.body 
+    puts JSON.pretty_generate(carted_products)
+  elsif 
+    user_input == "8"
+    respose = Unirest.post("http://localhost:3000/orders")
+    order = respose.body
+    puts JSON.pretty_generate(order)
   end  
 
  #Exit option

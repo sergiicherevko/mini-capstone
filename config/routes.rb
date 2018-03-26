@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   #User_toker
-  # post 'user_token' => 'user_token#create' ???
   post "/user_token" => "user_token#create"
 
   #Products
@@ -17,6 +16,7 @@ Rails.application.routes.draw do
   post "/orders" => "orders#create"
 
   #CartedProducts
+  get "/carted_products" => "carted_products#index"
   post "/carted_products" => "carted_products#create"
 end
 
