@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   before_action :authenticate_admin, except: [:index, :show]
 
   def index
-    if current_user
+    if true #current_user
       products = Product.all
       search_criteria = params["search_criteria"]
       if search_criteria
@@ -29,11 +29,16 @@ class ProductsController < ApplicationController
     product = Product.new(
       name: params["input_name"],
       price: params["input_price"],
-      image_url: params["input_image_url"],
+      # image_url: params["input_image_url"],
       description: params["input_description"],
       supplier_id: params["supplier_id"]
       )
     if product.save
+      image = Image.new(
+        url: params["input_image_url"],
+        product_id: product.id
+      )
+      image.save
       render json: product.as_json
     else
       render json: {errors: product.errors.full_messages}, status: :unprocessable_entity

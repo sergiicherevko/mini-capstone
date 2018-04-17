@@ -1,0 +1,8 @@
+body {
+  font-family: Futura;
+  background-image: url("bg.png");
+}
+
+.row {
+    margin-top: 25px;
+}
