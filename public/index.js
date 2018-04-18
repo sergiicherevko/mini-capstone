@@ -5,7 +5,9 @@ var HomePage = {
   data: function() {
     return {
       message: "Welcome to Vue.js!",
-      products: []
+      products: [],
+      titleFilter: "",
+      sortAttribute: "description"
     };
   },
   created: function() {
@@ -16,8 +18,23 @@ var HomePage = {
       }.bind(this)
     );
   },
-  methods: {},
-  computed: {}
+  methods: {
+    isValidProduct: function(inputProduct) {
+      return inputProduct.name.toLowerCase().includes(this.titleFilter); //???
+    }
+  },
+  computed: {
+    sortedProducts: function() {
+      return this.products.sort(
+        function(product1, product2) {
+          // return product1.chef.localeCompare(product2.chef);
+          var lowerAttribute1 = product1[this.sortAttribute].toLowerCase();
+          var lowerAttribute2 = product2[this.sortAttribute].toLowerCase();
+          return lowerAttribute1.localeCompare(lowerAttribute2);
+        }.bind(this)
+      );
+    }
+  }
 };
 
 var router = new VueRouter({
@@ -31,18 +48,8 @@ var app = new Vue({
   el: "#vue-app",
   router: router
 });
-// var productTemplate = document.querySelector("#product-card");
-// var productContainer = document.querySelector(".row");
 
-// axios.get("http://localhost:3000/products").then(function(response) {
-//   var products = response.data;
-//   console.log(products);
+// Exercise:
+// Add buttons that sort your list by various attributes.
 
-//   products.forEach(function(product) {
-//     var productClone = productTemplate.content.cloneNode(true);
-
-//     productClone.querySelector(".card-title").innerText = product.name;
-//     productClone.querySelector(".card-img-top").src = product.images[0];
-//     productContainer.appendChild(productClone);
-//   });
-// });
+// Bonus: Add a "v" icon that shows up on the button corresponding to the currently sorted attribute. (Like the table at the bottom of this page: https://data.cityofchicago.org/Administration-Finance/Current-Employee-Names-Salaries-and-Position-Title/xzkq-xp2w) (

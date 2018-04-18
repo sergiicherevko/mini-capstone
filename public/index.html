@@ -67,14 +67,18 @@
 
 <template id="home-page">
   <div class="vue-component">
-
     <h1 align="center">Sergii's Wishlist: </h1>
-
     <div class="container">
-
+    <input type="text" v-model="titleFilter" placeholder="Search by product" list="product-names">
+    <button class="btn btn-primary" v-on:click="sortAttribute = 'name'">Sort by Name</button>
+    <datalist id="product-names">
+      <option v-for="product in products">
+        {{product.name.toLowerCase()}}
+      </option>
+    </datalist>
     <div class="row">
       <!-- Cards goes here  -->
-      <div class="col-md-4" v-for="product in products">
+      <div class="col-md-4" v-for="product in sortedProducts" v-for="product in products" v-if="isValidProduct(product)">
         <div class="product-card">
           <img class="card-img-top" v-bind:src="product.images[0]">
           <div class="card-body">
@@ -84,23 +88,10 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
-<!-- <template id="product-card">
-  <div class="col-md-4">
-    <div class="product-card">
-      <img class="card-img-top" src="https://d30y9cdsu7xlg0.cloudfront.net/png/1246502-200.png">
-      <div class="card-body">
-        <h5 class="card-title">Title: </h5>
-        <p class="card-text">Description: </p>
-        <a href="#" class="btn btn-primary" v-on:click="setCurrentRecipe(recipe)" data-toggle="modal" data-target="#exampleModal">More info</a>
-      </div>
-    </div>
-  </div>
-</template> -->
 
 <template id="sample-page">
   <div class="vue-component">
